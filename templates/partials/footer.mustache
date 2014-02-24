@@ -1,0 +1,12 @@
+<footer>
+    <nav>
+        <ul>
+            <li>Home</li>
+        </ul>
+    </nav>
+    <ul>
+    {{ # posts }}
+    <li><p>{{ title }}</p><p>{{ dateString }}</p>{{{ summary }}}</li>
+    {{ / posts }}
+    </ul>
+</footer>
