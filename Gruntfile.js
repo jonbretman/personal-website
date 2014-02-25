@@ -27,5 +27,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', ['clean', 'blog', 'serve', 'watch']);
+    grunt.registerTask('build', ['clean', 'blog']);
 
 };

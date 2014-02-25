@@ -7,7 +7,7 @@ title: Jon Bretman
 <ul>
 {{ # posts }}
     <li>
-        <a href="/{{{ link }}}">
+        <a href="{{{ link }}}">
             <p>{{ title }}</p>
             <p>{{ dateString }}</p>
             {{{ summary }}}

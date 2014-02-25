@@ -106,7 +106,7 @@ module.exports = function (grunt) {
             post.destPath.push('index.html');
             post.destPath = post.destPath.join('/');
 
-            post.link = post.destPath.replace('index.html', '');
+            post.link = '/' + post.destPath.replace('index.html', '');
 
             return post;
         },
@@ -134,7 +134,8 @@ module.exports = function (grunt) {
             post.contentRaw = this.parseMarkdownContent(post.src);
             post.content = marked(post.contentRaw);
 
-            post.link = post.destPath = post.path.split('/').pop().replace('.md', '.html');
+            post.destPath = post.path.split('/').pop().replace('.md', '.html');
+            post.link = '/' + post.destPath;
 
             return post;
         },
