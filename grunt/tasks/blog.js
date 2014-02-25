@@ -1,175 +1,318 @@
 module.exports = function (grunt) {
 
     var mustache = require('mustache');
-    var _ = require('underscore');
     var marked = require('marked');
-    var hljs = require('highlight.js');
+    var highlight = require('highlight.js');
     var yaml = require('js-yaml');
+    var beautify = require('js-beautify').html;
 
-    var Templates = function (dir) {
+    // setup marked to highlight code snippets
+    marked.setOptions({
 
-        grunt.file.expand({
-            cwd: dir,
-            filter: 'isFile'
-        }, '**/*').forEach(function (template) {
-            this[template.replace('.mustache', '')] = grunt.file.read(dir + '/' + template);
-        }.bind(this));
+        highlight: function (code) {
+            return highlight.highlightAuto(code).value;
+        }
 
-        marked.setOptions({
+    });
 
-            highlight: function (code) {
-                return hljs.highlightAuto(code).value;
+    var Blog = function (options) {
+        this.options = options;
+        this.templates = this.compileTemplates();
+        this.posts = grunt.file.expand(options.posts).map(this.compilePost.bind(this));
+        this.pages = grunt.file.expand(options.pages).map(this.compilePage.bind(this));
+    };
+
+    Blog.prototype = {
+
+        months: [
+            'Jan',
+            'Feb',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'Aug',
+            'Sept',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+
+        extend: function (target) {
+
+            var sources = [].slice.call(arguments, 1);
+
+            sources.forEach(function (source) {
+
+                for (var key in source) {
+                    if (source.hasOwnProperty(key)) {
+                        target[key] = source[key];
+                    }
+                }
+
+            });
+
+            return target;
+        },
+        
+        compileTemplates: function () {
+
+            var templates = {};
+
+            grunt.file.expand({
+                cwd: this.options.templatesDir,
+                filter: 'isFile'
+            }, '**/*').forEach(function (template) {
+                templates[template.replace('.mustache', '')] = grunt.file.read(this.options.templatesDir + '/' + template);
+            }.bind(this));
+
+            return templates;
+        },
+
+        /**
+         *
+         * @param path
+         * @returns {*}
+         */
+        compilePost: function (path) {
+
+            var post = {};
+            post.path = path;
+            post.type = 'POST';
+
+            post.src = grunt.file.read(path);
+
+            // add all front matter data to post object
+            this.extend(post, this.parseFrontMatter(post.src));
+
+            if (!post.template) {
+                post.template = 'index';
             }
 
-        });
-    };
+            post.contentRaw = this.parseMarkdownContent(post.src);
+            post.summaryRaw = post.contentRaw.trim().split('\n')[0];
 
-    Templates.prototype = {
+            post.content = marked(post.contentRaw);
+            post.summary = marked(post.summaryRaw);
 
-        render: function (name, data) {
-            data.content = marked(mustache.render(data.content, data));
-            data.summary = marked(mustache.render(data.summary, data));
-            return mustache.render(this[name], data, this);
-        }
+            if (post.date) {
+                post.dateString = this.createDateString(post.date);
+            }
 
-    };
+            post.destPath = ['posts'];
+            post.destPath.push(this.getNormalizedDate(post.date));
+            post.destPath.push(post.title.toLowerCase().replace(/ /g, '-').replace(/,/g, ''));
+            post.destPath.push('index.html');
+            post.destPath = post.destPath.join('/');
 
-    var Page = function (src, type) {
+            post.link = post.destPath.replace('index.html', '');
 
-        this.path = src;
-        this.type = type;
-
-        src = grunt.file.read(src);
-
-        var lines = src.split('\n');
-
-        if (lines[0][0] !== '-') {
-            console.log('Invalid blog post file!');
-        }
-
-        var frontMatter = [];
-
-        lines.shift();
-
-        while (lines[0][0] !== '-') {
-            frontMatter.push(lines.shift());
-        }
-
-        lines.shift();
-
-        this.src = src;
-
-        frontMatter = yaml.safeLoad(frontMatter.join('\n'));
-        for (var key in frontMatter) {
-            this[key] = frontMatter[key];
-        }
-
-        if (!this.template) {
-            this.template = 'index';
-        }
-
-        this.content = lines.join('\n');
-        this.summary = this.content.trim().split('\n')[0];
-
-        if (this.date) {
-            this.createDateString();
-        }
-
-        this.createDestPath();
-    };
-
-    Page.prototype = {
-
-        getSrc: function () {
-            return this.src;
+            return post;
         },
 
-        getRawContent: function () {
-            return this.rawContent;
+        /**
+         *
+         * @param path
+         * @returns {*}
+         */
+        compilePage: function (path) {
+
+            var post = {};
+            post.path = path;
+            post.type = 'PAGE';
+
+            post.src = grunt.file.read(path);
+
+            // add all front matter data to post object
+            this.extend(post, this.parseFrontMatter(post.src));
+
+            if (!post.template) {
+                post.template = 'index';
+            }
+
+            post.contentRaw = this.parseMarkdownContent(post.src);
+            post.content = marked(post.contentRaw);
+
+            post.link = post.destPath = post.path.split('/').pop().replace('.md', '.html');
+
+            return post;
         },
 
-        getParsedDate: function () {
-            var dateObj = this.date;
+        /**
+         *
+         * @param src
+         * @returns {*}
+         */
+        parseFrontMatter: function (src) {
 
-            var year = dateObj.getFullYear();
+            var lines = src.split('\n');
+            var frontMatter = [];
 
-            var month = dateObj.getMonth() + 1;
-            month = month < 10 ? '0' + month : month;
+            if (lines[0][0] !== '-') {
+                return {};
+            }
 
-            var date = dateObj.getDate();
-            date = date < 10 ? '0' + date : date;
+            // remove start of front matter
+            lines.shift();
 
-            return year + '/' + month + '/' + date;
+            // get yaml front matter
+            while (lines[0][0] !== '-') {
+                frontMatter.push(lines.shift());
+            }
+
+            // remove end of front matter
+            lines.shift();
+
+            // add all front matter data to post object
+            return yaml.safeLoad(frontMatter.join('\n'));
         },
 
-        createDateString: function () {
-            var date = this.date;
-            var day = date.getDate();
-            var month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+        /**
+         *
+         * @param src
+         * @returns {string}
+         */
+        parseMarkdownContent: function (src) {
+
+            var lines = src.split('\n');
+
+            if (lines[0][0] !== '-') {
+                return lines.join('\n');
+            }
+
+            lines.shift();
+
+            // get yaml front matter
+            while (lines[0][0] !== '-') {
+                lines.shift();
+            }
+
+            lines.shift();
+
+            return lines.join('\n').trim();
+        },
+
+        /**
+         *
+         * @param date
+         * @returns {string}
+         */
+        createDateString: function (date) {
+            return [
+                this.paddedNumber(date.getDate()),
+                this.months[date.getMonth()],
+                date.getFullYear()
+            ].join(' ');
+        },
+
+        /**
+         * @param {Date} date The date object
+         * @param {String} [separator] Separator string, default is '/'
+         * @returns {String}
+         */
+        getNormalizedDate: function (date, separator) {
+
+            separator = separator || '/';
+
             var year = date.getFullYear();
-            this.dateString = day + ' ' + month + ' ' + year;
+            var month = this.paddedNumber(date.getMonth() + 1);
+            var day = this.paddedNumber(date.getDate());
+
+            return [year, month, day].join(separator);
         },
 
-        createDestPath: function () {
+        /**
+         * Pads a number with a leading '0'.
+         * @param {Number} n
+         * @returns {string}
+         */
+        paddedNumber: function (n) {
+            return n < 10 ? '0' + n : n;
+        },
 
-            if (this.type === Page.POST) {
-                this.destPath = ['posts'];
-                this.destPath.push(this.getParsedDate());
-                this.destPath.push(this.title.toLowerCase().replace(/ /g, '-').replace(/,/g, ''));
-                this.destPath = this.destPath.join('/') + '.html';
-            }
-            else {
-                var parts = this.path.split('/');
-                this.destPath = parts.pop().replace('.md', '.html');
+        /**
+         * Renders a single page or post.
+         * @returns {Blog}
+         */
+        render: function (obj) {
+
+            this.page = obj;
+
+            obj.content = mustache.render(obj.content, this);
+
+            if (obj.summary) {
+                obj.summary = marked(mustache.render(obj.summary, this));
             }
 
+            // generate html for this page
+            var html = mustache.render(this.templates[obj.template], this, this.templates);
+            html = beautify(html.replace(/\n/g, '').replace(/ +/g, ' '));
+
+            // write page to destination
+            grunt.file.write(this.options.dest + obj.destPath, html);
+            grunt.log.ok(obj.destPath + ' created');
+            return this;
+        },
+
+        /**
+         * Renders all posts.
+         * @returns {Blog}
+         */
+        renderPosts: function () {
+            grunt.log.subhead('Rendering posts:');
+
+            this.posts.sort(function (a, b) {
+                return b.date - a.date;
+            }).forEach(this.render.bind(this));
+
+            return this;
+        },
+
+        /**
+         * Renders all pages.
+         * @returns {Blog}
+         */
+        renderPages: function () {
+            grunt.log.subhead('Rendering pages:');
+
+            this.pages.forEach(this.render.bind(this));
+            return this;
+        },
+
+        /**
+         * Copies static assets to the build directory.
+         * @returns {Blog}
+         */
+        copyAssets: function () {
+
+            grunt.log.subhead('Copying static assets:');
+            var count = 0;
+
+            grunt.file.expand({filter: 'isFile'}, this.options.assetsDir + '/**/*').forEach(function (file) {
+                grunt.file.write(this.options.dest + file, grunt.file.read(file));
+                count++;
+            }.bind(this));
+
+            grunt.log.ok(count + ' static ' + grunt.util.pluralize(count, 'file/files') + ' copied');
+            return this;
         }
 
     };
-
-    Page.POST = 'POST';
-    Page.PAGE = 'PAGE';
 
     grunt.registerTask('blog', function () {
 
-        var options = this.options({
+        var blog = new Blog(this.options({
             dest: 'build/',
             posts: 'posts/**/*',
             pages: 'pages/**/*',
             templatesDir: 'templates',
             assetsDir: 'assets'
-        });
+        }));
 
-        var data = {};
-
-        var templates = new Templates(options.templatesDir);
-
-        var render = function (page) {
-            grunt.file.write(options.dest + page.destPath, templates.render(page.template, _.extend({}, data, page)));
-        };
-
-        // data for posts
-        data.posts = grunt.file.expand(options.posts).map(function (post) {
-            return new Page(post, Page.POST);
-        }).sort(function (a, b) {
-            return b.date - a.date;
-        });
-
-        // data for pages
-        data.pages = grunt.file.expand(options.pages).map(function (page) {
-            return new Page(page, Page.PAGE);
-        });
-
-        // create posts
-        data.posts.forEach(render);
-
-        // create pages
-        data.pages.forEach(render);
-
-        // static assets
-        grunt.file.expand({filter: 'isFile'}, options.assetsDir + '/**/*').forEach(function (file) {
-            grunt.file.write(options.dest + file, grunt.file.read(file));
-        });
+        blog.renderPosts();
+        blog.renderPages();
+        blog.copyAssets();
 
     });
 

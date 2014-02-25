@@ -2,8 +2,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', function () {
 
-        this.async();
-
         var http = require('http');
 
         var mimeTypes = {
