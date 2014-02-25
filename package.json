@@ -1,13 +1,8 @@
 {
   "name": "blog",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "description": "another simple blog thing...",
+  "author": "Jon Bretman",
   "devDependencies": {
     "grunt": "~0.4.2",
     "js-yaml": "~3.0.1",
