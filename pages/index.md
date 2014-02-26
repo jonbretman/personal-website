@@ -1,17 +1,8 @@
----
-title: Jon Bretman
----
-
-### Posts
-
-<ul>
 {{ # posts }}
-    <li>
-        <a href="{{{ link }}}">
-            <p>{{ title }}</p>
-            <p>{{ dateString }}</p>
-            {{{ summary }}}
-        </a>
-    </li>
+<div class="post-summary">
+    <h3>{{ title }}</h3>
+    <p class="post-date">Posted {{ dateString }}</p>
+    {{{ summary }}}
+    <a href="{{ link }}">Read more</a>
+</div>
 {{ / posts }}
-</ul>

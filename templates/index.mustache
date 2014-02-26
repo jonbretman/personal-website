@@ -1,15 +1,65 @@
 <!doctype html>
 <html>
 {{ > partials/head }}
-<body>
+<body class="{{ page.name }}">
+    <div id="main-container">
 
     {{ > partials/header }}
 
-    <section>
-        {{{ page.content }}}
+    <section id="main-content">
+        <div class="container">
+
+            {{ # page.isPost }}
+                <h2 class="post-title">{{ page.title }}</h2>
+                <p class="post-date">Posted {{ page.dateString }}</p>
+
+                {{ # page.categories.length }}
+                <p class="post-categories">
+                    Tags:
+                    {{ # page.categories }}
+                    <span class="post-category">{{ . }}</span>
+                    {{ / page.categories }}
+                </p>
+                {{ / page.categories.length}}
+
+                <hr>
+            {{ / page.isPost }}
+
+            {{{ page.content }}}
+
+            {{ # page.isPost }}
+            <hr>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+
+                var disqus_shortname = 'jonbretman';
+
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            {{ / page.isPost }}
+
+        </div>
     </section>
 
     {{ > partials/footer }}
+
+    </div>
+
+    {{ # options.production }}
+    <script src="/js/main.min.js"></script>
+    {{ / options.production }}
+
+    {{ ^ options.production }}
+    <script src="/js/main.js"></script>
+    {{ / options.production }}
 
 </body>
 </html>

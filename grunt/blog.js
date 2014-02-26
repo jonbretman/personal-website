@@ -79,7 +79,7 @@ module.exports = function (grunt) {
 
             var post = {};
             post.path = path;
-            post.type = 'POST';
+            post.isPost = true;
 
             post.src = grunt.file.read(path);
 
@@ -120,7 +120,7 @@ module.exports = function (grunt) {
 
             var post = {};
             post.path = path;
-            post.type = 'PAGE';
+            post.isPage = true;
 
             post.src = grunt.file.read(path);
 
@@ -135,6 +135,7 @@ module.exports = function (grunt) {
             post.content = marked(post.contentRaw);
 
             post.destPath = post.path.split('/').pop().replace('.md', '.html');
+            post.name = post.destPath.replace('.html', '');
             post.link = '/' + post.destPath;
 
             return post;
@@ -276,26 +277,7 @@ module.exports = function (grunt) {
          */
         renderPages: function () {
             grunt.log.subhead('Rendering pages:');
-
             this.pages.forEach(this.render.bind(this));
-            return this;
-        },
-
-        /**
-         * Copies static assets to the build directory.
-         * @returns {Blog}
-         */
-        copyAssets: function () {
-
-            grunt.log.subhead('Copying static assets:');
-            var count = 0;
-
-            grunt.file.expand({filter: 'isFile'}, this.options.assetsDir + '/**/*').forEach(function (file) {
-                grunt.file.write(this.options.dest + file, grunt.file.read(file));
-                count++;
-            }.bind(this));
-
-            grunt.log.ok(count + ' static ' + grunt.util.pluralize(count, 'file/files') + ' copied');
             return this;
         }
 
@@ -304,16 +286,15 @@ module.exports = function (grunt) {
     grunt.registerTask('blog', function () {
 
         var blog = new Blog(this.options({
+            production: false,
             dest: 'build/',
             posts: 'posts/**/*',
             pages: 'pages/**/*',
-            templatesDir: 'templates',
-            assetsDir: 'assets'
+            templatesDir: 'templates'
         }));
 
         blog.renderPosts();
-        blog.renderPages();
-        blog.copyAssets();
+        blog.renderPages()
 
     });
 

@@ -1,0 +1,236 @@
+/****************/
+/*    Imports   */
+/****************/
+@import "normalize.less";
+@import "highlight.less";
+
+.Transition (@transition) {
+    -webkit-transition: @transition;
+    -moz-transition: @transition;
+    -ms-transition: @transition;
+    -o-transition: @transition;
+    transition: @transition;
+}
+
+@BORDER_COLOR: #CCC;
+@TEXT_COLOR: #2B2B2B;
+@BACKGROUND_COLOR: #EEE;
+@CODE_BACKGROUND_COLOR: #EFEFEF;
+@LINK_COLOR: #408AB4;
+
+/****************/
+/*  Typography  */
+/****************/
+body {
+    font-family: Lato, "Helvetica Neue Light", sans-serif;
+    font-size: 100%;
+    line-height: 1.5em;
+    background-color: @BACKGROUND_COLOR;
+    color: @TEXT_COLOR;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.5em;
+}
+p, li {
+    line-height: 2em;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin: 0.3em 0;
+    line-height: 1em;
+}
+h2 {
+    font-size: 1.25em;
+    margin: 0.5em 0;
+}
+h3, h4 {
+    font-size: 1em;
+    margin: 1em 0;
+}
+p {
+    font-size: 1em;
+    margin: 1em 0;
+}
+a:link,
+a:visited,
+a:hover,
+a:active {
+    .Transition(color 150ms ease);
+    color: @LINK_COLOR;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+    color: #6db5dd;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+
+
+/***********************************************************************/
+/*  Grid system based on Toast.css - https://github.com/daneden/Toast  */
+/***********************************************************************/
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.grid {
+    margin-left: -3%;
+    max-width: 105%;
+}
+
+.unit {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    margin-left: 3%;
+    margin-right: -.25em;
+    /* Clearfix */
+    overflow: hidden;
+    *overflow: visible;
+}
+
+.span-grid {
+    width: 97%;
+}
+
+.one-of-two { width: 47%; }
+
+.one-of-three { width: 30.36%; }
+.two-of-three { width: 63.666666666%; }
+
+.one-of-four { width: 22.05%; }
+.three-of-four { width: 72%; }
+
+.one-of-five { width: 17.07%; }
+.two-of-five { width: 37%; }
+.three-of-five { width: 57%; }
+.four-of-five { width: 77%; }
+
+@media screen and (max-width: 650px) {
+    .grid {
+        margin-left: 0;
+        max-width: none;
+    }
+    .unit {
+        width: auto;
+        margin-left: 0;
+        display: block;
+    }
+}
+
+
+/******************/
+/*     Styling    */
+/******************/
+
+#main-header,
+#main-content,
+#main-footer {
+    padding: 1em 10px;
+}
+#main-header {
+    border-bottom: 1px solid @BORDER_COLOR;
+}
+#main-header a {
+    color: @TEXT_COLOR;
+}
+#main-header a:hover {
+    color: lighten(@TEXT_COLOR, 25%);
+    text-decoration: none;
+}
+#main-footer {
+    border-top: 1px solid @BORDER_COLOR;
+}
+
+
+/**********************/
+/*     Code Blocks    */
+/**********************/
+.highlight {
+    padding: 0.1em 10px;
+    background-color: @CODE_BACKGROUND_COLOR;
+}
+
+
+/**********************************/
+/*     Posts list on Home Page    */
+/**********************************/
+.post-summary {
+
+    padding-bottom: 0.75em;
+    border-bottom: 1px solid @BORDER_COLOR;
+
+    h3 {
+        margin-bottom: 0;
+    }
+
+    .post-date {
+        font-size: 0.7em;
+    }
+
+    p, a {
+        margin: 0.5em 0;
+        font-size: 0.8em;
+    }
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+
+}
+
+
+/******************/
+/*      Post      */
+/******************/
+.post-date,
+.post-categories {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.post-categories,
+.post-date {
+    font-weight: bold;
+    font-size: 12px;
+}
+.post-category {
+    border-radius: 5px;
+    display: inline-block;
+    padding: 0 6px;
+    margin-left: 8px;
+    background-color: #3498db;
+    color: white;
+}
+
+
+/*********************/
+/*     About Page    */
+/*********************/
+img[alt="me"] {
+    border-radius: 200px;
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
