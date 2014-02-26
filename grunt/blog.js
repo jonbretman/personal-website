@@ -123,27 +123,27 @@ module.exports = function (grunt) {
          */
         compilePage: function (path) {
 
-            var post = {};
-            post.path = path;
-            post.isPage = true;
+            var page = {};
+            page.path = path;
+            page.isPage = true;
 
-            post.src = grunt.file.read(path);
+            page.src = grunt.file.read(path);
 
             // add all front matter data to post object
-            this.extend(post, this.parseFrontMatter(post.src));
+            this.extend(page, this.parseFrontMatter(page.src));
 
-            if (!post.template) {
-                post.template = 'index';
+            if (!page.template) {
+                page.template = 'index';
             }
 
-            post.contentRaw = this.parseMarkdownContent(post.src);
-            post.content = marked(post.contentRaw);
+            page.contentRaw = this.parseMarkdownContent(page.src);
+            page.content = marked(page.contentRaw);
 
-            post.destPath = post.path.split('/').pop().replace('.md', '.html');
-            post.name = post.destPath.replace('.html', '');
-            post.link = '/' + post.destPath;
+            page.destPath = page.path.split('/').pop().replace('.md', '.html');
+            page.name = page.destPath.replace('.html', '');
+            page.link = '/' + page.destPath;
 
-            return post;
+            return page;
         },
 
         /**
