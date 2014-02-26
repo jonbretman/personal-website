@@ -1,8 +1,8 @@
-{{ # posts }}
+{{ # recentPosts }}
 <div class="post-summary">
-    <h3>{{ title }}</h3>
+    <h2>{{ title }}</h2>
     <p class="post-date">Posted {{ dateString }}</p>
     {{{ summary }}}
     <a href="{{ link }}">Read more</a>
 </div>
-{{ / posts }}
+{{ / recentPosts }}

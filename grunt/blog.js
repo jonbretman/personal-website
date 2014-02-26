@@ -4,7 +4,6 @@ module.exports = function (grunt) {
     var marked = require('marked');
     var highlight = require('highlight.js');
     var yaml = require('js-yaml');
-    var beautify = require('js-beautify').html;
 
     // setup marked to highlight code snippets
     marked.setOptions({
@@ -20,6 +19,12 @@ module.exports = function (grunt) {
         this.templates = this.compileTemplates();
         this.posts = grunt.file.expand(options.posts).map(this.compilePost.bind(this));
         this.pages = grunt.file.expand(options.pages).map(this.compilePage.bind(this));
+
+        this.posts = this.posts.sort(function (a, b) {
+            return b.date - a.date;
+        });
+
+        this.recentPosts = this.posts.slice(0, 10);
     };
 
     Blog.prototype = {
@@ -249,7 +254,6 @@ module.exports = function (grunt) {
 
             // generate html for this page
             var html = mustache.render(this.templates[obj.template], this, this.templates);
-            html = beautify(html.replace(/\n/g, '').replace(/ +/g, ' '));
 
             // write page to destination
             grunt.file.write(this.options.dest + obj.destPath, html);

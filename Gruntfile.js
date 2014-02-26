@@ -4,7 +4,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     require('./grunt/blog')(grunt);
 
@@ -56,14 +55,6 @@ module.exports = function (grunt) {
             }
         },
 
-        uglify: {
-            js: {
-                files: {
-                    'build/js/main.min.js': 'assets/js/main.js'
-                }
-            }
-        },
-
         blog: {
             options: {
                 production: grunt.option('production')
@@ -76,8 +67,7 @@ module.exports = function (grunt) {
         'clean',
         'blog',
         'copy',
-        'less',
-        'uglify'
+        'less'
     ]);
 
     grunt.registerTask('default', ['build', 'watch']);
