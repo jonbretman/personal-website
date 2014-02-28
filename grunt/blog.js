@@ -15,6 +15,7 @@ module.exports = function (grunt) {
     });
 
     var Blog = function (options) {
+
         this.options = options;
         this.templates = this.compileTemplates();
         this.posts = grunt.file.expand(options.posts).map(this.compilePost.bind(this));
@@ -240,10 +241,13 @@ module.exports = function (grunt) {
 
         /**
          * Renders a single page or post.
+         * @param {Object} obj A page or post object.
          * @returns {Blog}
          */
         render: function (obj) {
 
+            // set 'page' variable to this object
+            var originalPage = this.page;
             this.page = obj;
 
             obj.content = mustache.render(obj.content, this);
@@ -254,6 +258,9 @@ module.exports = function (grunt) {
 
             // generate html for this page
             var html = mustache.render(this.templates[obj.template], this, this.templates);
+
+            // reset this.page
+            this.page = originalPage;
 
             // write page to destination
             grunt.file.write(this.options.dest + obj.destPath, html);
