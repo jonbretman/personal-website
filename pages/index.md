@@ -1,8 +1,8 @@
 {{ # recentPosts }}
 <div class="post-summary">
-    <h2>{{ title }}</h2>
+    <h2 class="post-summary-title"><a href="{{ link }}">{{ title }}</a></h2>
     <p class="post-date">Posted {{ dateString }}</p>
     {{{ summary }}}
-    <a href="{{ link }}">Read more</a>
+    <a class="post-summary-read-more" href="{{ link }}">&raquo; Read more</a>
 </div>
 {{ / recentPosts }}

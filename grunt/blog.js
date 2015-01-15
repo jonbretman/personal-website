@@ -297,7 +297,6 @@ module.exports = function (grunt) {
     grunt.registerTask('blog', function () {
 
         var blog = new Blog(this.options({
-            production: false,
             dest: 'build/',
             posts: 'posts/**/*',
             pages: 'pages/**/*',

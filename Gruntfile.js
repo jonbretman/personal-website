@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         less: {
             compile: {
                 options: {
-                    compress: grunt.option('production')
+                    compress: grunt.option('minify-css')
                 },
                 files: {
                     'build/css/main.css': 'assets/css/main.less'
@@ -52,12 +52,6 @@ module.exports = function (grunt) {
                         dest: 'build'
                     }
                 ]
-            }
-        },
-
-        blog: {
-            options: {
-                production: grunt.option('production')
             }
         }
 
