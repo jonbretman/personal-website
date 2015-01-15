@@ -15,7 +15,7 @@
 @BORDER_COLOR: #CCC;
 @TEXT_COLOR: #2B2B2B;
 @BACKGROUND_COLOR: #EEE;
-@CODE_BACKGROUND_COLOR: #EFEFEF;
+@CODE_BACKGROUND_COLOR: #F3F3F3;
 @LINK_COLOR: #408AB4;
 
 /****************/
@@ -163,13 +163,55 @@ hr {
     border-top: 1px solid @BORDER_COLOR;
 }
 
+.social-icons {
+    margin: 10px auto 0 auto;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+    width: 32px * 2 + (10px * 4);
+}
+
+.social-icons-item {
+    float: left;
+}
+
+.social-icons-img {
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: transparent none center center no-repeat;
+    background-size: contain;
+    margin: 0 10px;
+}
+
+.social-icons-img-github {
+    background-image: url('../img/GitHub-Mark-64px.png');
+}
+
+.social-icons-img-twitter {
+    background-image: url('../img/Twitter_logo_blue.png');
+}
+
 
 /**********************/
 /*     Code Blocks    */
 /**********************/
-.highlight {
-    padding: 0.1em 10px;
+pre {
+    padding: 10px;
     background-color: @CODE_BACKGROUND_COLOR;
+    white-space: pre;
+    overflow: scroll;
+}
+
+p code {
+    background-color: @CODE_BACKGROUND_COLOR;
+    padding: 2px 8px;
+}
+
+@media screen and (max-width: 650px) {
+    pre {
+        font-size: 0.75em;
+    }
 }
 
 
@@ -181,8 +223,11 @@ hr {
     padding-bottom: 0.75em;
     border-bottom: 1px solid @BORDER_COLOR;
 
-    h2 {
+    .post-summary-title {
         margin-bottom: 0;
+        a {
+            color: @TEXT_COLOR;
+        }
     }
 
     .post-date {
@@ -204,6 +249,9 @@ hr {
 /******************/
 /*      Post      */
 /******************/
+.post-header {
+    position: relative;
+}
 .post-date,
 .post-categories {
     margin-top: 0;
@@ -233,4 +281,28 @@ img[alt="me"] {
     width: 200px;
     height: 200px;
     margin: 0 auto;
+}
+
+@media screen and (max-width: 650px) {
+    img[alt="me"] {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.tweet-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    [data-twttr-rendered] & {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .tweet-button {
+      position: static;
+    }
 }
