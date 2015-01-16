@@ -1,6 +1,6 @@
 ---
 title: Giving in to BEM
-date: 2014-01-15
+date: 2015-01-15
 categories: [css]
 ---
 
