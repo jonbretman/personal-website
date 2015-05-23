@@ -250,7 +250,10 @@ module.exports = function (grunt) {
             var originalPage = this.page;
             this.page = obj;
 
+            var tmp = this.page;
+            this.page = obj;
             obj.content = mustache.render(obj.content, this);
+            this.page = tmp;
 
             if (obj.summary) {
                 obj.summary = marked(mustache.render(obj.summary, this));

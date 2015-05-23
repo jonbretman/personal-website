@@ -5,14 +5,15 @@
   "author": "Jon Bretman",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "js-yaml": "~3.0.1",
-    "highlight.js": "~8.0.0",
-    "mustache": "~0.8.1",
-    "marked": "~0.3.1",
-    "underscore": "~1.6.0",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-less": "~0.9.0",
-    "grunt-contrib-copy": "~0.5.0"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-http-server": "^1.3.0",
+    "highlight.js": "~8.0.0",
+    "js-yaml": "~3.0.1",
+    "marked": "~0.3.1",
+    "mustache": "~0.8.1",
+    "underscore": "~1.6.0"
   }
 }

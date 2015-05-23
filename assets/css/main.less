@@ -12,11 +12,19 @@
     transition: @transition;
 }
 
-@BORDER_COLOR: #CCC;
 @TEXT_COLOR: #2B2B2B;
-@BACKGROUND_COLOR: #EEE;
-@CODE_BACKGROUND_COLOR: #F3F3F3;
+@BACKGROUND_COLOR: #FFF;
+@SECONDARY_BACKGROUND_COLOR: darken(@BACKGROUND_COLOR, 2%);
+@BORDER_COLOR: darken(@SECONDARY_BACKGROUND_COLOR, 5%);
+@CODE_BACKGROUND_COLOR: @SECONDARY_BACKGROUND_COLOR;
 @LINK_COLOR: #408AB4;
+@LINK_HOVER_COLOR: lighten(@LINK_COLOR, 10%);
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 /****************/
 /*  Typography  */
@@ -29,37 +37,37 @@ body {
     color: @TEXT_COLOR;
 }
 
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-h1, h2, h3, h4 {
-    line-height: 1.5em;
-}
-p, li {
-    line-height: 2em;
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3em;
+    margin: 0 0 0.5em 0;
 }
 
 h1 {
-    font-size: 2.5em;
-    text-align: center;
-    margin: 0.3em 0;
-    line-height: 1em;
+    font-size: 3.25rem;
+    letter-spacing: -3px;
 }
+
 h2 {
-    font-size: 1.25em;
-    margin: 0.5em 0;
+    font-size: 3rem;
 }
-h3, h4 {
-    font-size: 1em;
-    margin: 1em 0;
+
+h3 {
+    font-size: 2rem;
 }
-p {
-    font-size: 1em;
-    margin: 1em 0;
+
+h4 {
+    font-size: 1.5rem;
 }
+
+h5 {
+    font-size: 1.35rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+a,
 a:link,
 a:visited,
 a:hover,
@@ -68,9 +76,22 @@ a:active {
     color: @LINK_COLOR;
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
-    color: #6db5dd;
+    color: @LINK_HOVER_COLOR;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    a,
+    a:link,
+    a:visited {
+        color: @TEXT_COLOR;
+    }
+
+    a:hover {
+        color: @LINK_HOVER_COLOR;
+    }
 }
 
 hr {
@@ -82,7 +103,52 @@ hr {
     padding: 0;
 }
 
+strong {
+    font-weight: bold;
+}
 
+small {
+    font-size: 0.8rem;
+}
+
+@media all and (max-width: 500px) {
+    h1 {
+        font-size: 2rem;
+        letter-spacing: 0;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+    }
+
+    h3 {
+        font-size: 1.35rem;
+    }
+
+    h4 {
+        font-size: 1.35rem;
+    }
+
+    h5 {
+        font-size: 1.35rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+}
+/***********************************************************************/
+/*  Helpers  */
+/***********************************************************************/
+.text-center {
+    text-align: center;
+}
+
+.no-hover-text-decoration {
+    &:hover {
+        text-decoration: none;
+    }
+}
 
 /***********************************************************************/
 /*  Grid system based on Toast.css - https://github.com/daneden/Toast  */
@@ -114,24 +180,48 @@ hr {
     width: 97%;
 }
 
-.one-of-two { width: 47%; }
+.one-of-two {
+    width: 47%;
+}
 
-.one-of-three { width: 30.36%; }
-.two-of-three { width: 63.666666666%; }
+.one-of-three {
+    width: 30.36%;
+}
 
-.one-of-four { width: 22.05%; }
-.three-of-four { width: 72%; }
+.two-of-three {
+    width: 63.666666666%;
+}
 
-.one-of-five { width: 17.07%; }
-.two-of-five { width: 37%; }
-.three-of-five { width: 57%; }
-.four-of-five { width: 77%; }
+.one-of-four {
+    width: 22.05%;
+}
+
+.three-of-four {
+    width: 72%;
+}
+
+.one-of-five {
+    width: 17.07%;
+}
+
+.two-of-five {
+    width: 37%;
+}
+
+.three-of-five {
+    width: 57%;
+}
+
+.four-of-five {
+    width: 77%;
+}
 
 @media screen and (max-width: 650px) {
     .grid {
         margin-left: 0;
         max-width: none;
     }
+
     .unit {
         width: auto;
         margin-left: 0;
@@ -139,28 +229,37 @@ hr {
     }
 }
 
-
 /******************/
 /*     Styling    */
 /******************/
 
-#main-header,
-#main-content,
-#main-footer {
-    padding: 1em 10px;
-}
-#main-header {
+.main-header {
+    background-color: @SECONDARY_BACKGROUND_COLOR;
     border-bottom: 1px solid @BORDER_COLOR;
+    padding: 1em 10px;
+
+    &__heading {
+
+        a {
+            color: @TEXT_COLOR;
+
+            &:hover {
+                color: @LINK_COLOR;
+                text-decoration: none;
+            }
+        }
+    }
+
 }
-#main-header a {
-    color: @TEXT_COLOR;
+
+.main-content {
+    padding-top: 2em;
 }
-#main-header a:hover {
-    color: lighten(@TEXT_COLOR, 25%);
-    text-decoration: none;
-}
-#main-footer {
+
+.main-footer {
+    background-color: @SECONDARY_BACKGROUND_COLOR;
     border-top: 1px solid @BORDER_COLOR;
+    padding: 1em 10px;
 }
 
 .social-icons {
@@ -192,6 +291,10 @@ hr {
     background-image: url('../img/Twitter_logo_blue.png');
 }
 
+img {
+    display: block;
+    width: 100%;
+}
 
 /**********************/
 /*     Code Blocks    */
@@ -201,6 +304,7 @@ pre {
     background-color: @CODE_BACKGROUND_COLOR;
     white-space: pre;
     overflow: scroll;
+    border-left: 3px solid @LINK_COLOR;
 }
 
 p code {
@@ -214,24 +318,15 @@ p code {
     }
 }
 
-
 /**********************************/
 /*     Posts list on Home Page    */
 /**********************************/
 .post-summary {
-
     padding-bottom: 0.75em;
     border-bottom: 1px solid @BORDER_COLOR;
+    margin-bottom: 2em;
 
-    .post-summary-title {
-        margin-bottom: 0;
-        a {
-            color: @TEXT_COLOR;
-        }
-    }
-
-    .post-date {
-        font-size: 0.7em;
+    &__title {
         margin-bottom: 0;
     }
 
@@ -245,32 +340,33 @@ p code {
 
 }
 
+.post-date {
+    margin: 0.5em 0;
+}
 
 /******************/
 /*      Post      */
 /******************/
 .post-header {
     position: relative;
+
+    &__title {
+        margin-bottom: 0;
+    }
 }
-.post-date,
-.post-categories {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-.post-categories,
-.post-date {
-    font-weight: bold;
-    font-size: 12px;
-}
+
 .post-category {
     border-radius: 5px;
     display: inline-block;
     padding: 0 6px;
-    margin-left: 8px;
+    margin-right: 8px;
     background-color: #3498db;
     color: white;
 }
 
+.post-content {
+    margin-bottom: 2.5em;
+}
 
 /*********************/
 /*     About Page    */
@@ -303,6 +399,10 @@ img[alt="me"] {
 
 @media screen and (max-width: 650px) {
     .tweet-button {
-      position: static;
+        position: static;
     }
+}
+
+p:empty {
+    display: none;
 }

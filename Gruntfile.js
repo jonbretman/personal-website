@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-http-server');
 
     require('./grunt/blog')(grunt);
 
@@ -53,6 +54,32 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+
+        'http-server': {
+
+            'dev': {
+
+                // the server root directory
+                root: './build/',
+
+                // the server port
+                // can also be written as a function, e.g.
+                // port: function() { return 8282; }
+                port: 8000,
+
+
+                // the host ip address
+                // If specified to, for example, "127.0.0.1" the server will
+                // only be available on that ip.
+                // Specify "0.0.0.0" to be available everywhere
+                host: "localhost",
+
+                // run in parallel with other tasks
+                runInBackground: true
+
+            }
+
         }
 
     });
@@ -64,6 +91,6 @@ module.exports = function (grunt) {
         'less'
     ]);
 
-    grunt.registerTask('default', ['build', 'watch']);
+    grunt.registerTask('default', ['build', 'http-server', 'watch']);
 
 };
