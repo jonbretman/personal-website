@@ -162,7 +162,7 @@ Api.get('/conversations', function (conversations) {
     // much more likely to make it here now
     App.renderMessages(intros);
 });
-```js
+```
 
 Obviously there is no getting away from the fact that we have had to add quite a lot of additional code to avoid the risk of `TypeError`'s, but at Badoo we would always rather send a few extra bytes of JavaScript down the wire if it means our application is more stable.
 
