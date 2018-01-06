@@ -1,12 +1,8 @@
 ---
+path: /posts/2015/05/23/bringing-jinja-to-javascript/
 title: Bringing Jinja to JavaScript
 date: 2015-05-23
 categories: [javascript, python]
-
-name: '{{ name }}'
-numberKey: '{{ number }}'
-nameKey: '{{ name }}'
-mustacheLoopExample: '{{#numbers}}{{ . }}{{/numbers}}'
 ---
 
 About 6 months ago I was trying to work out how we ([Lyst](http://www.lyst.com)) could share templates between the server (Python) and the browser. On the server we are using [Jinja2](http://jinja.pocoo.org/docs/dev/) templates, and in the browser we are using [Underscore](http://underscorejs.org/#template) templates, and although both were working fine there were many occasions where we would have liked the felixibility to be able to render the same template in multiple environments.
@@ -17,12 +13,12 @@ My initial thoughts were to find a templating language that had implementations 
 
 ```
 In [40]: import pystache
-In [41]: t = pystache.parse(u'{{ page.mustacheLoopExample }}')
+In [41]: t = pystache.parse(u'{{#numbers}}{{ . }}{{/numbers}}')
 In [42]: %timeit pystache.render(t, dict(numbers=list(range(100))))
 1000 loops, best of 3: 661 µs per loop
 
 In [43]: import jinja2
-In [44]: t = jinja2.Template('{% for number in numbers %}{{ page.numberKey }}{% endfor %}')
+In [44]: t = jinja2.Template('{% for number in numbers %}{{ number }}{% endfor %}')
 In [45]: %timeit t.render(numbers=list(range(100)))
 10000 loops, best of 3: 30.8 µs per loop
 ```
@@ -30,10 +26,10 @@ In [45]: %timeit t.render(numbers=list(range(100)))
 This is far from the most complete benchmark but it's still clear that Jinaj2 is a **lot** faster than pystache. This is not that suprising when you look at the difference between the compiled version of each template.
 
 ```
-In [51]: pystache.parse(u'{{ page.mustacheLoopExample }}')
+In [51]: pystache.parse(u'{{#numbers}}{{ . }}{{/numbers}}')
 Out[51]: [_SectionNode(key=u'numbers', index_begin=12, index_end=19, parsed=[_EscapeNode(key=u'.')])]
 
-In [52]: jinja2.Environment().compile('{% for number in numbers %}{{ page.numberKey }}{% endfor %}', raw=True)
+In [52]: jinja2.Environment().compile('{% for number in numbers %}{{ number }}{% endfor %}', raw=True)
 Out[52]: "from __future__ import division\nfrom jinja2.runtime import LoopContext, TemplateReference, Macro, Markup, TemplateRuntimeError, missing, concat, escape, markup_join, unicode_join, to_string, identity, TemplateNotFound\nname = None\n\ndef root(context, environment=environment):\n    l_numbers = context.resolve('numbers')\n    if 0: yield None\n    l_number = missing\n    for l_number in l_numbers:\n        if 0: yield None\n        yield to_string(l_number)\n    l_number = missing\n\nblocks = {}\ndebug_info = '1=9'"
 ```
 
@@ -67,7 +63,7 @@ This is actually one of the strenghts of Underscore templates, like Jinja templa
 It is possible to get the AST Jinja generates by using the `parse` method on a `jinja2.Environment` instance. For example:
 
 ```
-In [88]: jinja2.Environment().parse('{{ page.nameKey }}')
+In [88]: jinja2.Environment().parse('{{ name }}')
 Out[88]: Template(body=[Output(nodes=[Name(name='name', ctx='load')])])
 ```
 
@@ -76,7 +72,7 @@ Now I just needed to write an implementation for each node in the AST that outpu
 ```jinja
 
 {% for number in numbers %}
-    {{ page.numberKey }}
+    {{ number }}
 {% endfor %}
 ```
 
@@ -102,7 +98,7 @@ $ jinja_to_js -f example.jinja -o example.underscore
 ### But is it web scale?
 I knew from my previous benchmarks that Jinja was faster than pystache, but what about Underscore vs. Mustache.js in the browser? A [jsPerf test](http://jsperf.com/underscore-vs-mustache) using the same template string and data as I used for the Python benchmark gives the following results:
 
-![benchmark](/img/mustache-vs-underscore-benchmark.png)
+![benchmark](/mustache-vs-underscore-benchmark.png)
 
 Again we can see that an approach that turns a template into code is much faster than one that has to execute against an AST each time it renders.
 

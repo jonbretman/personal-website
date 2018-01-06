@@ -1,4 +1,5 @@
 ---
+path: /posts/2013/10/21/type-checking-in-javascript/
 title: Type Checking in JavaScript
 date: 2013-10-21
 categories: [javascript]

@@ -1,4 +1,5 @@
 ---
+path: /posts/2015/01/15/giving-in-to-bem/
 title: Giving in to BEM
 date: 2015-01-15
 categories: [css]

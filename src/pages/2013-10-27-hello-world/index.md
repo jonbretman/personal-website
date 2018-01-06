@@ -1,4 +1,5 @@
 ---
+path: /posts/2013/10/27/hello-world/
 title: hello, world
 date: 2013-10-27
 categories: [posts]
