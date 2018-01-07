@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    working_directory: /home
+    docker:
+      - image: node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: |
+            yarn install --frozen-lockfile
+      - run:
+          name: Build
+          command: |
+            yarn build
+      - run:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then \
+              curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+              unzip awscli-bundle.zip
+              ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+              aws s3 sync public s3://www.jonbretman.co.uk
+            fi
