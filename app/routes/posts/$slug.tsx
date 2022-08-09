@@ -33,10 +33,20 @@ export const loader: LoaderFunction = async ({
 
 export default function Post() {
   const data = useLoaderData<LoaderData>();
+  const { post } = data;
   return (
     <div>
-      <h3>{data.post.title}</h3>
-      <div dangerouslySetInnerHTML={{ __html: data.post.html }}></div>
+      <h2 className="text-4xl mb-2 font-serif text-emerald-900">
+        {post.attributes.title}
+      </h2>
+      <p className="font-sans font-semibold mb-4 text-gray-600">
+        {post.attributes.month} {post.attributes.year}
+      </p>
+      <hr className="mb-8" />
+      <div
+        dangerouslySetInnerHTML={{ __html: post.html }}
+        className="font-sans text-base leading-7 space-y-6 pb-24 text-gray-600"
+      ></div>
     </div>
   );
 }
