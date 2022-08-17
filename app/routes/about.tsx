@@ -8,9 +8,9 @@ export default function About() {
           className="max-w-[40%] shadow-md rounded-sm"
         />
         <p className="flex-auto prose">
-          Hi there. I'm Jon. This is what I looked like on the 17th Auguest
-          2022. Below you'll find a little timeline containing things of note
-          that have happened in my life so far.
+          Hi there. I'm Jon. This is what I looked like on the 17th August 2022.
+          Below you'll find a little timeline containing things of note that
+          have happened in my life so far.
         </p>
       </div>
       <hr className="mb-8" />
