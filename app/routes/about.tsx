@@ -85,22 +85,22 @@ const entries = [
   {
     year: "2007",
     month: null,
-    what: "2010 Toured extensively throughout the UK and Europe playing hundreds of live shows",
+    what: "Toured extensively throughout the UK and Europe with The Foxes playing hundreds of shows",
   },
   {
     year: "2010",
     month: null,
-    what: "Recorded our debut (and only album) appropriately called Last of Many at Sawmills Studios in Cornwall and produced by John Cornfield ",
+    what: "Recorded The Foxes debut (and only) album, appropriately called Last of Many. We recorded at Sawmills Studios in Cornwall with John Cornfield producing",
   },
   {
     year: "2010",
     month: null,
-    what: 'Starting to think I might need a post-music career and after a few pints with my friend Ash asking about his job as a "developer" I bought a book on HTML and CSS',
+    what: 'Starting to think I might need a post-music career and after a few pints with my friend Ash (of Waitrose fish counter fame) asking about his job as a "developer" I bought a book on HTML and CSS',
   },
   {
     year: "2011",
     month: "March",
-    what: "Took a job working on Waitrose.com updating the website content. ",
+    what: "Took a job working on Waitrose.com doing basic content management. There were a lot of people doing Java",
   },
   {
     year: "2011",
@@ -115,7 +115,7 @@ const entries = [
   {
     year: "2012",
     month: null,
-    what: "Joined Badoo as a Software Engineer on the Mobile Web team ",
+    what: "Joined Badoo as a Software Engineer on the Mobile Web team",
   },
   {
     year: "2014",
@@ -125,7 +125,7 @@ const entries = [
   {
     year: "2015",
     month: "Feb",
-    what: "First recording session working on my own songs at Tilehouse Studios, ran by the lovely Luke Oldfield. ",
+    what: "First recording session at Tilehouse Studios, working on my own songs.",
   },
   {
     year: "2015",
@@ -168,6 +168,11 @@ const entries = [
     what: "Released my second EP - Full Circle. Hanover Square, a song with a lot of chords,features my Uncle John on piano.",
   },
   {
+    year: "2018",
+    month: null,
+    what: "Sei and I got enagaged",
+  },
+  {
     year: "2019",
     month: null,
     what: `Drove to Southampton to "have a look" at a litter of Poochon's (Poodle and Bichon Frise cross). Came home with little Bowie.`,
@@ -180,7 +185,7 @@ const entries = [
   {
     year: "2021",
     month: null,
-    what: "Diagnosed with Hodgkins Lymphoma, started chemotherapy",
+    what: "Diagnosed with Hodgkins Lymphoma, which was (and still is) a total bummer.",
   },
   {
     year: "2022",
@@ -190,6 +195,6 @@ const entries = [
   {
     year: "2022",
     month: "Feb",
-    what: "Moved into the Chingford house after a lengthy renovation",
+    what: "Moved into the Chingford house after a lengthy renovation.",
   },
 ];
