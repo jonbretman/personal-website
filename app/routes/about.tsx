@@ -2,10 +2,10 @@ export default function About() {
   return (
     <div>
       <h2 className="text-4xl mb-4 font-serif text-emerald-900">Hello 👋</h2>
-      <div className="flex flex-auto gap-2 flex-row-reverse mb-4">
+      <div className="flex items-start gap-4 flex-row-reverse mb-4">
         <img
           src="/photos/2022-08-17-me.jpeg"
-          className="w-2/5 shadow-md rounded-sm"
+          className="max-w-[40%] shadow-md rounded-sm"
         />
         <p className="flex-auto prose">
           Hi there. I'm Jon. This is what I looked like on the 17th Auguest
