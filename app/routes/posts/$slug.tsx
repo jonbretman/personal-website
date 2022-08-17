@@ -39,13 +39,13 @@ export default function Post() {
       <h2 className="text-4xl mb-2 font-serif text-emerald-900">
         {post.attributes.title}
       </h2>
-      <p className="font-sans font-semibold mb-4 text-gray-600">
+      <p className="font-sans font-semibold mb-4">
         {post.attributes.month} {post.attributes.year}
       </p>
       <hr className="mb-8" />
       <div
         dangerouslySetInnerHTML={{ __html: post.html }}
-        className="font-sans text-base leading-7 space-y-6 pb-24 text-gray-600"
+        className="prose pb-16 prose-a:text-orange-800"
       ></div>
     </div>
   );

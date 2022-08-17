@@ -56,7 +56,7 @@ export default function App() {
         />
         <Links />
       </head>
-      <body className="text-gray-800">
+      <body className="text-gray-600">
         <div className="mb-8">
           <Header />
         </div>

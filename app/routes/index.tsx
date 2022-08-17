@@ -45,7 +45,7 @@ export default function Index() {
                         {post.attributes.month}
                       </span>
                       <br></br>
-                      <span className="text-xl text-emerald-900">
+                      <span className="text-2xl text-emerald-900 font-serif">
                         {post.attributes.title}
                       </span>
                     </Link>
