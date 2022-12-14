@@ -9,6 +9,8 @@ import {
 } from "@remix-run/react";
 import { Header } from "./components/Header";
 import tw from "./tailwind.css";
+import { inject } from "@vercel/analytics";
+import { useEffect } from "react";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -44,6 +46,10 @@ export const links: LinksFunction = () => {
 };
 
 export default function App() {
+  useEffect(() => {
+    inject();
+  });
+
   return (
     <html lang="en">
       <head>

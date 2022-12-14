@@ -12,6 +12,7 @@ specifiers:
   '@types/react': ^17.0.47
   '@types/react-dom': ^17.0.17
   '@types/showdown': ^2.0.0
+  '@vercel/analytics': ^0.1.6
   '@vercel/node': ^2.4.4
   eslint: ^8.20.0
   front-matter: ^4.0.2
@@ -30,6 +31,7 @@ dependencies:
   '@tailwindcss/typography': 0.5.4_tailwindcss@3.1.8
   '@types/node': 18.7.6
   '@types/showdown': 2.0.0
+  '@vercel/analytics': 0.1.6_react@17.0.2
   '@vercel/node': 2.5.8
   front-matter: 4.0.2
   prettier: 2.7.1
@@ -2052,6 +2054,14 @@ packages:
       '@typescript-eslint/types': 5.33.1
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/analytics/0.1.6_react@17.0.2:
+    resolution: {integrity: sha512-zNd5pj3iDvq8IMBQHa1YRcIteiw6ZiPB8AsONHd8ieFXlNpLqhXfIYnf4WvTfZ7S1NSJ++mIM14aJnNac/VMXQ==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /@vercel/build-utils/5.3.1:
     resolution: {integrity: sha512-i+O40FAFgDSNPQbBA5pNQURukA+4E0e560ylamPytNgPjiaj83fR1uV1XYxUAZFxlRNG93HSrKEwG6/Xx3F3bg==}
