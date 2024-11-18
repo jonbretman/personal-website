@@ -1,6 +1,6 @@
-import { LoaderFunction, Response } from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getPost, PostData } from "../../posts.server";
+import { getPost, PostData } from "../posts.server";
 
 type LoaderData = {
   post: PostData;

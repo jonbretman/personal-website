@@ -1,12 +1,8 @@
 node_modules
 
-.cache
+.DS_Store
+
+/.cache
+/build
 .env
 .vercel
-.output
-
-/build/
-/public/build
-/api/
-
-/app/tailwind.css

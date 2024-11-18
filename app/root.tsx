@@ -1,55 +1,16 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Analytics } from "@vercel/analytics/react";
+
+import "./tailwind.css";
 import { Header } from "./components/Header";
-import tw from "./tailwind.css";
-import { inject } from "@vercel/analytics";
-import { useEffect } from "react";
-
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Jon Bretman",
-  viewport: "width=device-width,initial-scale=1",
-});
-
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "apple-touch-icon",
-      sizes: "180x180",
-      href: "/apple-touch-icon.png",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      sizes: "32x32",
-      href: "/favicon-32x32.png",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      sizes: "16x16",
-      href: "/favicon-16x16.png",
-    },
-    {
-      rel: "manifest",
-      href: "/site.webmanifest",
-    },
-    { rel: "stylesheet", href: tw },
-  ];
-};
 
 export default function App() {
-  useEffect(() => {
-    inject();
-  });
-
   return (
     <html lang="en">
       <head>
@@ -63,6 +24,7 @@ export default function App() {
         <Links />
       </head>
       <body className="text-gray-600">
+        <Analytics />
         <div className="mb-8">
           <Header />
         </div>
@@ -71,7 +33,6 @@ export default function App() {
         </div>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

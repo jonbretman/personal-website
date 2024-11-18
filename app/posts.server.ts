@@ -1,6 +1,6 @@
-import fs from "fs/promises";
 import fm from "front-matter";
 import showdown from "showdown";
+import { basename, extname } from "path";
 
 export type PostData = {
   slug: string;
@@ -17,30 +17,35 @@ type PostFrontMatter = {
 const converter = new showdown.Converter();
 
 export async function getPost(slug: string): Promise<PostData> {
-  const fileContents = await fs.readFile(`${__dirname}/../posts/${slug}.md`);
-  const content = fm<PostFrontMatter>(fileContents.toString("utf8"));
+  const posts = await listPosts();
+  const post = posts.find((x) => x.slug === slug);
+  if (!post) {
+    throw new Error("not found");
+  }
 
-  const html = converter.makeHtml(content.body);
-
-  return {
-    slug,
-    attributes: content.attributes,
-    html,
-  };
+  return post;
 }
 
 export async function listPosts(): Promise<PostData[]> {
-  const dir = await fs.readdir(`${__dirname}/../posts`);
-  const posts = await Promise.all(
-    dir
-      .sort()
-      .reverse()
-      .filter((x) => x.endsWith(".md"))
-      .map((x) => x.replace(/\.md$/, ""))
-      .map((slug) => {
-        return getPost(slug);
-      })
-  );
+  const posts: PostData[] = [];
+  const ps = import.meta.glob("../posts/*.md", {
+    eager: true,
+    query: "?raw",
+    import: "default",
+  });
+  for (const [k, v] of Object.entries(ps)) {
+    const slug = basename(k).replace(extname(k), "");
+    const content = fm<PostFrontMatter>(v as string);
+    const html = converter.makeHtml(content.body);
 
-  return posts;
+    posts.push({
+      slug,
+      attributes: content.attributes,
+      html,
+    });
+  }
+
+  return posts.sort((x, y) => {
+    return x.slug > y.slug ? -1 : 1;
+  });
 }
