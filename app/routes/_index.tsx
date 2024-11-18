@@ -1,6 +1,5 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import React from "react";
 import { listPosts, PostData } from "../posts.server";
 
 type LoaderData = {
@@ -19,7 +18,7 @@ export default function Index() {
   const data = useLoaderData<LoaderData>();
 
   const postsByYear = data.posts.reduce<PostData[][]>((memo, post) => {
-    const curr = memo.length > 0 ? memo[0] : null;
+    const curr = memo.length > 0 ? memo[memo.length - 1] : null;
     if (curr && curr[0].attributes.year === post.attributes.year) {
       curr.push(post);
     } else {
