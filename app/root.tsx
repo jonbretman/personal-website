@@ -21,6 +21,10 @@ export default function App() {
           href="https://fonts.googleapis.com/css2?family=Amiri&family=Open+Sans:wght@400;600&display=swap"
           rel="stylesheet"
         />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
         <Links />
       </head>
       <body className="text-gray-600">
